@@ -1,57 +1,48 @@
-"""Stage 5 — duration fitting.
+"""Stage 5 — duration fitting + timeline assembly.
 
 Translated speech rarely matches the original line length. We time-stretch each
-synthesized segment to fit its original slot (without changing pitch) and lay the
-segments back on the original timeline, so the dub stays in sync with the action
-before lip-sync even runs.
+synthesized segment to fit its slot (pitch preserved, via ffmpeg atempo) and lay the
+segments back on the original timeline, so the dub stays in sync with the action.
 """
 from __future__ import annotations
 
+import os
 from typing import List
 
+from . import audioio
 from .schema import Segment
 
-
-def fit_segment(in_wav: str, out_wav: str, target_seconds: float) -> None:
-    """Time-stretch `in_wav` to `target_seconds`, preserving pitch."""
-    import librosa            # lazy
-    import soundfile as sf
-    import pyrubberband as pyrb
-
-    y, sr = librosa.load(in_wav, sr=None)
-    cur = librosa.get_duration(y=y, sr=sr)
-    if cur > 0 and target_seconds > 0:
-        rate = cur / target_seconds          # >1 speeds up, <1 slows down
-        rate = max(0.7, min(1.4, rate))      # clamp so speech stays natural
-        y = pyrb.time_stretch(y, sr, rate)
-    sf.write(out_wav, y, sr)
+SR = 24000
 
 
 def fit_all(segments: List[Segment], out_dir: str) -> List[Segment]:
-    import os
     os.makedirs(out_dir, exist_ok=True)
     for seg in segments:
         if not seg.audio_path:
             continue
         fitted = os.path.join(out_dir, f"seg_{seg.id:03d}_fit.wav")
-        fit_segment(seg.audio_path, fitted, seg.duration)
+        audioio.atempo_fit(seg.audio_path, fitted, seg.duration)
         seg.audio_path = fitted
     return segments
 
 
-def assemble_timeline(segments: List[Segment], total_seconds: float, out_wav: str) -> None:
+def assemble_timeline(segments: List[Segment], total_seconds: float, out_wav: str) -> str:
     """Place each fitted segment at its original start time onto a silent bed."""
-    import numpy as np            # lazy
+    import numpy as np            # lazy (installed with the CPU deps)
     import soundfile as sf
-    import librosa
 
-    sr = 24000
-    bed = np.zeros(int(total_seconds * sr) + sr, dtype="float32")
+    bed = np.zeros(int(total_seconds * SR) + SR, dtype="float32")
     for seg in segments:
         if not seg.audio_path:
             continue
-        y, _ = librosa.load(seg.audio_path, sr=sr)
-        start = int(seg.start * sr)
+        y, sr = sf.read(seg.audio_path, dtype="float32")
+        if y.ndim > 1:
+            y = y.mean(axis=1)
+        start = int(seg.start * SR)
         end = min(start + len(y), len(bed))
         bed[start:end] += y[: end - start]
-    sf.write(out_wav, bed, sr)
+    peak = float(np.max(np.abs(bed))) or 1.0
+    if peak > 1.0:
+        bed = bed / peak
+    sf.write(out_wav, bed, SR)
+    return out_wav

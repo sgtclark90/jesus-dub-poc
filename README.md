@@ -47,24 +47,39 @@ clip_dubbed.mp4
 
 ★ Stage 3 is the trust layer and runs **for real even in `--demo`** — it's pure logic, no model needed.
 
-## Run the full pipeline (GPU)
+## Produce a real dubbed clip — **no GPU required**
 
-The real dub needs a GPU + ffmpeg. Easiest path is the one-click Colab notebook:
-
-➡ **`notebooks/colab_demo.ipynb`** — upload a clip + a 6-second voice reference, run all cells, download the dubbed video.
-
-Locally:
+The default pipeline runs on a plain CPU laptop. It uses `edge-tts` for speech and, with
+no GPU/Wav2Lip present, **muxes the dubbed audio onto the original video** — you still get
+a watchable dubbed clip. (Lip-sync and voice-cloning are the GPU upgrades, below.)
 
 ```bash
-pip install -r requirements.txt          # + install ffmpeg and a Wav2Lip checkout
-python -m src.pipeline \
-    --input data/input/clip.mp4 \
-    --speaker data/input/voice_ref.wav \
-    --src-lang eng_Latn --tgt-lang swh_Latn --xtts-lang sw \
-    --wav2lip-dir ../Wav2Lip
+pip install -r requirements.txt          # ffmpeg auto-bundled in ./tools on Windows
+pwsh -File scripts/get_model.ps1         # one-time: fetch the ~600MB NLLB model via curl
+# drop your clip at data/input/clip.mp4, then:
+python -m src.pipeline --input data/input/clip.mp4 \
+    --src-lang eng_Latn --tgt-lang swh_Latn --tts-lang sw
 ```
 
-If QA flags any key term, the pipeline **stops before dubbing** (override with `--no-gate`).
+Output: `outputs/clip_dubbed.mp4` (the Swahili dub muxed onto your clip). If QA flags any
+key term, the pipeline **stops before dubbing** (override with `--no-gate`).
+
+> **Verified end-to-end on a CPU-only Windows laptop** (no GPU, no PyTorch): ASR
+> (faster-whisper) → translation (NLLB-200 on CTranslate2) → glossary QA → Swahili TTS
+> (edge-tts) → timeline fit → mux. Real NLLB output, e.g.
+> *"He is the Messiah, the Lord." → "Yeye ndiye Masihi, Bwana."*
+
+No clip yet? Generate a synthetic English test clip to try the whole thing:
+
+```bash
+python scripts/make_test_clip.py         # writes data/input/clip.mp4
+```
+
+### The GPU upgrades (Colab)
+
+➡ **`notebooks/colab_demo.ipynb`** — one-click runner that adds:
+- **Voice cloning** — `--tts-backend xtts --speaker ref.wav` turns one actor into a full cast.
+- **Lip-sync** — `--lipsync --wav2lip-dir ../Wav2Lip` so the lips match the new language.
 
 ## Why these building blocks
 

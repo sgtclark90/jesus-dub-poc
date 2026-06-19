@@ -22,7 +22,11 @@ def transcribe(audio_or_video: str, model_size: str = "large-v3",
     """
     from faster_whisper import WhisperModel  # lazy
 
-    model = WhisperModel(model_size, device="auto", compute_type="auto")
+    try:
+        model = WhisperModel(model_size, device="cuda", compute_type="float16")
+    except Exception:
+        # No CUDA on this box — int8 on CPU is the fast, low-memory choice.
+        model = WhisperModel(model_size, device="cpu", compute_type="int8")
     segments, info = model.transcribe(audio_or_video, language=language, vad_filter=True)
 
     out: List[Segment] = []

@@ -9,6 +9,11 @@ outputs/*.mp4
 data/input/*.mp4
 data/input/*.wav
 *.pth
+# downloaded ML model weights — fetched via scripts/get_model.ps1, never committed
+models/
+*.bin
+# bundled static ffmpeg/ffprobe (fetched at setup) — too large to commit
+tools/
 # keep the small JSON artifacts so the QA report is visible in the repo
 !outputs/segments.json
 !outputs/qa_report.json

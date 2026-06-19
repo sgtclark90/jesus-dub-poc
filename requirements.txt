@@ -1,20 +1,22 @@
-# --- Core (the --demo path needs NOTHING below; pure stdlib) ---
+# The --demo path needs NOTHING here (pure stdlib).
+#
+# The full CPU pipeline (NO GPU, NO torch) needs only this block + ffmpeg on PATH
+# (Windows: the setup step bundles a static ffmpeg in ./tools):
 
-# --- Stage 1: ASR ---
-faster-whisper>=1.0.0          # or use Meta MMS for very low-resource source langs
+faster-whisper>=1.0.0     # [1] ASR  (CTranslate2 engine, CPU int8)
+ctranslate2>=4.0.0        # [2] translation engine (installed with faster-whisper)
+transformers>=4.41.0      # [2] NLLB tokenizer ONLY (no torch needed — tokenizer mode)
+sentencepiece>=0.2.0      # NLLB tokenizer
+huggingface-hub>=0.23.0   # fetch the pre-converted NLLB model
+edge-tts>=6.1.0           # [4] CPU TTS backend (default; needs network at synth time)
+soundfile>=0.12.0         # [5] timeline assembly
+numpy>=1.24.0             # [5] timeline assembly
 
-# --- Stage 2: Translation ---
-transformers>=4.41.0
-sentencepiece>=0.2.0
-torch>=2.2.0                   # install the CUDA build for GPU
+# Translation runs NLLB-200 converted to int8 for CTranslate2 — downloaded once
+# (~617 MB) from JustFrederik/nllb-200-distilled-600M-ct2-int8. Runs on CPU, offline
+# thereafter. No PyTorch, no GPU.
 
-# --- Stage 4: TTS + voice cloning ---
-TTS>=0.22.0                    # Coqui XTTS-v2
-
-# --- Stage 5: Duration fitting ---
-librosa>=0.10.0
-soundfile>=0.12.0
-pyrubberband>=0.3.0            # needs the 'rubberband' CLI on PATH
-
-# Stage 6 (lip-sync) uses an external Wav2Lip checkout — see README.
-# ffmpeg must be installed and on PATH for video/audio I/O.
+# --- Optional GPU upgrades (Colab) ---
+# torch (CUDA build)      # for --mt-backend nllb and --tts-backend xtts
+# TTS>=0.22.0             # Coqui XTTS-v2 voice cloning (one actor -> full cast)
+# external Wav2Lip checkout for --lipsync; without it the dub is muxed onto the clip.
