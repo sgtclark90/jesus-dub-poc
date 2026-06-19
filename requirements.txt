@@ -11,6 +11,7 @@ huggingface-hub>=0.23.0   # fetch the pre-converted NLLB model
 edge-tts>=6.1.0           # [4] CPU TTS backend (default; needs network at synth time)
 soundfile>=0.12.0         # [5] timeline assembly
 numpy>=1.24.0             # [5] timeline assembly
+gradio>=5.0               # local web UI (app.py)
 
 # Translation runs NLLB-200 converted to int8 for CTranslate2 — downloaded once
 # (~617 MB) from JustFrederik/nllb-200-distilled-600M-ct2-int8. Runs on CPU, offline

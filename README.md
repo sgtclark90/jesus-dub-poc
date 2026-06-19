@@ -47,7 +47,18 @@ clip_dubbed.mp4
 
 ★ Stage 3 is the trust layer and runs **for real even in `--demo`** — it's pure logic, no model needed.
 
-## Produce a real dubbed clip — **no GPU required**
+## The web UI (best for a live demo)
+
+```bash
+python app.py        # opens http://127.0.0.1:7860
+```
+
+Drag in a clip, pick a **target language** (15 curated, NLLB + natural TTS), choose
+transcription quality, hit **Dub it**. You get a **live progress bar**, the dubbed video,
+a downloadable **.srt subtitle** file, the **transcript → translation** table, and the
+**key-term QA report** — all in the browser.
+
+## Produce a real dubbed clip — **no GPU required** (CLI)
 
 The default pipeline runs on a plain CPU laptop. It uses `edge-tts` for speech and, with
 no GPU/Wav2Lip present, **muxes the dubbed audio onto the original video** — you still get
