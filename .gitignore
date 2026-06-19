@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+outputs/audio/
+outputs/audio_fit/
+outputs/*.wav
+outputs/*.mp4
+data/input/*.mp4
+data/input/*.wav
+*.pth
+# keep the small JSON artifacts so the QA report is visible in the repo
+!outputs/segments.json
+!outputs/qa_report.json

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 5.2,
+    "text_source": "And there were shepherds living out in the fields nearby, keeping watch over their flocks at night.",
+    "text_target": "Kulikuwa na wachungaji waliokaa mashambani karibu, wakilinda makundi yao usiku.",
+    "audio_path": "outputs/audio/seg_000.wav  (stub — run full pipeline for real audio)",
+    "duration": 5.2
+  },
+  {
+    "id": 1,
+    "start": 5.2,
+    "end": 10.6,
+    "text_source": "An angel of the Lord appeared to them, and the glory of the Lord shone around them, and they were terrified.",
+    "text_target": "Malaika wa Bwana akawatokea, na utukufu wa Bwana ukawaangazia, nao wakaogopa sana.",
+    "audio_path": "outputs/audio/seg_001.wav  (stub — run full pipeline for real audio)",
+    "duration": 5.4
+  },
+  {
+    "id": 2,
+    "start": 10.6,
+    "end": 15.1,
+    "text_source": "But the angel said to them, 'Do not be afraid. I bring you good news of great joy for all the people.'",
+    "text_target": "Lakini malaika akawaambia, 'Msiogope. Nawaletea habari njema ya furaha kuu kwa watu wote.'",
+    "audio_path": "outputs/audio/seg_002.wav  (stub — run full pipeline for real audio)",
+    "duration": 4.5
+  },
+  {
+    "id": 3,
+    "start": 15.1,
+    "end": 20.4,
+    "text_source": "Today in the town of David a Savior has been born to you; he is the Messiah, the Lord.",
+    "text_target": "Leo katika mji wa Daudi mmezaliwa Mwokozi; yeye ni Bwana.",
+    "audio_path": "outputs/audio/seg_003.wav  (stub — run full pipeline for real audio)",
+    "duration": 5.3
+  },
+  {
+    "id": 4,
+    "start": 20.4,
+    "end": 25.0,
+    "text_source": "Glory to God in the highest heaven, and on earth peace to those on whom his favor rests.",
+    "text_target": "Utukufu kwa Mungu juu mbinguni, na duniani amani kwa wale anaowapenda.",
+    "audio_path": "outputs/audio/seg_004.wav  (stub — run full pipeline for real audio)",
+    "duration": 4.6
+  },
+  {
+    "id": 5,
+    "start": 25.0,
+    "end": 29.3,
+    "text_source": "This is the good news about Jesus the Christ, the Son of God.",
+    "text_target": "Hii ni habari njema kuhusu Yesu Kristo, Mwana wa Mungu.",
+    "audio_path": "outputs/audio/seg_005.wav  (stub — run full pipeline for real audio)",
+    "duration": 4.3
+  }
+]

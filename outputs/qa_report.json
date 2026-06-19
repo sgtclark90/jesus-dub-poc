@@ -1,0 +1,97 @@
+{
+  "summary": {
+    "terms_checked": 11,
+    "auto_passed": 10,
+    "needs_human_review": 1
+  },
+  "flags": [
+    {
+      "segment_id": 1,
+      "term_source": "Lord",
+      "expected_target": "Bwana",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    },
+    {
+      "segment_id": 1,
+      "term_source": "angel",
+      "expected_target": "malaika",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    },
+    {
+      "segment_id": 2,
+      "term_source": "angel",
+      "expected_target": "malaika",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    },
+    {
+      "segment_id": 3,
+      "term_source": "Lord",
+      "expected_target": "Bwana",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    },
+    {
+      "segment_id": 3,
+      "term_source": "Savior",
+      "expected_target": "Mwokozi",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    },
+    {
+      "segment_id": 3,
+      "term_source": "Messiah",
+      "expected_target": "Masihi",
+      "found_in_translation": false,
+      "status": "review",
+      "note": "source uses 'Messiah' but expected target 'Masihi' not found — human check needed"
+    },
+    {
+      "segment_id": 4,
+      "term_source": "God",
+      "expected_target": "Mungu",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    },
+    {
+      "segment_id": 5,
+      "term_source": "Jesus",
+      "expected_target": "Yesu",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    },
+    {
+      "segment_id": 5,
+      "term_source": "Christ",
+      "expected_target": "Kristo",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    },
+    {
+      "segment_id": 5,
+      "term_source": "Son of God",
+      "expected_target": "Mwana wa Mungu",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    },
+    {
+      "segment_id": 5,
+      "term_source": "God",
+      "expected_target": "Mungu",
+      "found_in_translation": true,
+      "status": "ok",
+      "note": ""
+    }
+  ]
+}

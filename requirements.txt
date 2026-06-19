@@ -1,0 +1,20 @@
+# --- Core (the --demo path needs NOTHING below; pure stdlib) ---
+
+# --- Stage 1: ASR ---
+faster-whisper>=1.0.0          # or use Meta MMS for very low-resource source langs
+
+# --- Stage 2: Translation ---
+transformers>=4.41.0
+sentencepiece>=0.2.0
+torch>=2.2.0                   # install the CUDA build for GPU
+
+# --- Stage 4: TTS + voice cloning ---
+TTS>=0.22.0                    # Coqui XTTS-v2
+
+# --- Stage 5: Duration fitting ---
+librosa>=0.10.0
+soundfile>=0.12.0
+pyrubberband>=0.3.0            # needs the 'rubberband' CLI on PATH
+
+# Stage 6 (lip-sync) uses an external Wav2Lip checkout — see README.
+# ffmpeg must be installed and on PATH for video/audio I/O.
