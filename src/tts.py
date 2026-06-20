@@ -30,6 +30,32 @@ EDGE_VOICES = {
 }
 
 
+def _run_coro(coro):
+    """Run an async coroutine to completion, even when an event loop is already running
+    (Jupyter/Colab). We always use a fresh loop in a dedicated thread, so it works the
+    same in notebooks, Gradio, and plain scripts."""
+    import threading
+
+    box = {}
+
+    def worker():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            box["value"] = loop.run_until_complete(coro)
+        except BaseException as e:  # propagate to caller
+            box["error"] = e
+        finally:
+            loop.close()
+
+    t = threading.Thread(target=worker)
+    t.start()
+    t.join()
+    if "error" in box:
+        raise box["error"]
+    return box.get("value")
+
+
 def _edge_synth(segments: List[Segment], voice: str, out_dir: str) -> List[Segment]:
     import edge_tts  # lazy
 
@@ -46,7 +72,7 @@ def _edge_synth(segments: List[Segment], voice: str, out_dir: str) -> List[Segme
             if seg.text_target:
                 await one(seg)
 
-    asyncio.run(run_all())
+    _run_coro(run_all())
     return segments
 
 
