@@ -52,6 +52,13 @@ def _edge_synth(segments: List[Segment], voice: str, out_dir: str) -> List[Segme
 
 def _xtts_synth(segments: List[Segment], speaker_wav: str, language: str,
                 out_dir: str, model_name: str) -> List[Segment]:
+    # coqui-tts imports `LogitsWarper`, which newer transformers removed (merged into
+    # LogitsProcessor). Restore the name before importing TTS so the import succeeds.
+    import transformers
+    if not hasattr(transformers, "LogitsWarper"):
+        from transformers import LogitsProcessor as _LW
+        transformers.LogitsWarper = _LW
+
     from TTS.api import TTS  # lazy
     import torch
 
