@@ -1,5 +1,7 @@
 # JESUS Film — AI Dubbing PoC
 
+[![Open the GPU notebook in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sgtclark90/jesus-dub-poc/blob/master/notebooks/colab_demo.ipynb)
+
 **Turn one filmed scene into a fully dubbed, lip-synced clip in a new language — in minutes, with a human kept in charge of every sacred word.**
 
 The JESUS film has reached **2,100+ languages** through decades of manual dubbing. There are ~7,000 languages. Jesus Film Project has publicly said it's turning to AI to close that gap — for translation, for lip-sync, and for **synthesizing a full voice cast (old woman, child) from a single voice actor** where one isn't available. This is a working proof-of-concept of exactly that pipeline.
