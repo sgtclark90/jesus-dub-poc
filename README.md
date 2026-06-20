@@ -58,6 +58,14 @@ transcription quality, hit **Dub it**. You get a **live progress bar**, the dubb
 a downloadable **.srt subtitle** file, the **transcript → translation** table, and the
 **key-term QA report** — all in the browser.
 
+Options:
+- **Keep original music / SFX** — splits voice from the score and dubs only the voice, so
+  the music survives. Uses Demucs on GPU/Colab; on a CPU laptop it falls back to a
+  stereo center-channel split (stereo audio only).
+- **Clone original voice** — re-voice in the speaker's own voice across languages (XTTS,
+  GPU/Colab path).
+- **Language Suite** tab — dub one clip into **several languages at once**.
+
 ## Produce a real dubbed clip — **no GPU required** (CLI)
 
 The default pipeline runs on a plain CPU laptop. It uses `edge-tts` for speech and, with

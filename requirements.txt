@@ -18,6 +18,8 @@ gradio>=5.0               # local web UI (app.py)
 # thereafter. No PyTorch, no GPU.
 
 # --- Optional GPU upgrades (Colab) ---
-# torch (CUDA build)      # for --mt-backend nllb and --tts-backend xtts
+# torch (CUDA build)      # for --mt-backend nllb, XTTS, and Demucs
 # TTS>=0.22.0             # Coqui XTTS-v2 voice cloning (one actor -> full cast)
+# demucs>=4.0             # high-quality music/voice separation ("Keep music")
 # external Wav2Lip checkout for --lipsync; without it the dub is muxed onto the clip.
+# (On a CPU laptop, "Keep music" still works via a stereo center-channel fallback.)

@@ -71,3 +71,29 @@ def mux_audio(video: str, audio_wav: str, out_video: str) -> str:
     _run([ffmpeg(), "-y", "-i", video, "-i", audio_wav,
           "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-shortest", out_video])
     return out_video
+
+
+def extract_audio_stereo(media: str, out_wav: str, sr: int = 48000) -> str:
+    """Pull a STEREO wav (needed for center-channel vocal removal)."""
+    os.makedirs(os.path.dirname(out_wav) or ".", exist_ok=True)
+    _run([ffmpeg(), "-y", "-i", media, "-vn", "-ac", "2", "-ar", str(sr), out_wav])
+    return out_wav
+
+
+def remove_center_vocals(in_wav: str, out_wav: str) -> str:
+    """No-ML 'music bed': cancel the center-panned channel (usually the vocal) from a
+    stereo track, leaving the side-panned music/SFX. Works only on true stereo."""
+    _run([ffmpeg(), "-y", "-i", in_wav, "-af",
+          "pan=stereo|c0=0.5*c0-0.5*c1|c1=0.5*c1-0.5*c0", out_wav])
+    return out_wav
+
+
+def mix_tracks(voice_wav: str, bed_wav: str, out_wav: str,
+               voice_gain: float = 1.0, bed_gain: float = 0.55) -> str:
+    """Lay the dubbed voice over the preserved music bed (no auto-normalize drop)."""
+    fc = (f"[0:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={voice_gain}[v];"
+          f"[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume={bed_gain}[b];"
+          f"[v][b]amix=inputs=2:duration=longest:normalize=0[out]")
+    _run([ffmpeg(), "-y", "-i", voice_wav, "-i", bed_wav,
+          "-filter_complex", fc, "-map", "[out]", out_wav])
+    return out_wav
