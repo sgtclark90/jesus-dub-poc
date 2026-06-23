@@ -10,6 +10,28 @@ The JESUS film has reached **2,100+ languages** through decades of manual dubbin
 
 ---
 
+## ▶ Pick up where you left off
+
+Everything is committed to GitHub, so you can close any session and resume here.
+
+**Colab (GPU — translated + lip-synced video):**
+1. Open the **Open in Colab** badge above (or the link in `notebooks/colab_demo.ipynb`).
+2. **Runtime → Change runtime type → T4 GPU.**
+3. Run cells **1 → 7c** top to bottom. All dependency fixes and model downloads are baked in.
+   - A fresh Colab machine re-downloads the models (~10 min) and you re-upload your clip in cell 4 — that's expected.
+   - Outputs: `dubbed_<lang>.mp4` (cell 6) and `lipsynced.mp4` (cell 7c).
+
+**Local app (no GPU, offline, 15 languages, natural voice):**
+```bash
+cd C:\Users\mike.clark\jesus-dub-poc
+python app.py          # opens http://localhost:7860
+```
+First time only: `pip install -r requirements.txt` then `pwsh -File scripts/get_model.ps1`.
+
+> **State of things:** the translated **natural-voice dub** (transcribe → translate → voice → music → subtitles) is solid and verified. **Lip-sync** (Wav2Lip) works in Colab once cells 7a→7c run. **Cloned voice was dropped on Colab** — its library (coqui-tts) requires numpy<2, which is incompatible with Colab's stack. Natural voice is the dependable path.
+
+---
+
 ## See it run in 10 seconds (any laptop — no GPU, no models, no internet)
 
 ```bash
@@ -64,15 +86,17 @@ Options:
 - **Keep original music / SFX** — splits voice from the score and dubs only the voice, so
   the music survives. Uses Demucs on GPU/Colab; on a CPU laptop it falls back to a
   stereo center-channel split (stereo audio only).
-- **Clone original voice** — re-voice in the speaker's own voice across languages (XTTS,
-  GPU/Colab path).
 - **Language Suite** tab — dub one clip into **several languages at once**.
+
+> **Voice cloning** (re-voicing in the speaker's own voice) is supported in the code via
+> Coqui XTTS, but is **not viable on Colab** — XTTS requires numpy<2, which breaks Colab's
+> numpy-2 stack. It would need its own dedicated environment; natural voice is the path here.
 
 ## Produce a real dubbed clip — **no GPU required** (CLI)
 
 The default pipeline runs on a plain CPU laptop. It uses `edge-tts` for speech and, with
 no GPU/Wav2Lip present, **muxes the dubbed audio onto the original video** — you still get
-a watchable dubbed clip. (Lip-sync and voice-cloning are the GPU upgrades, below.)
+a watchable dubbed clip. (Lip-sync is the GPU upgrade, via the Colab notebook.)
 
 ```bash
 pip install -r requirements.txt          # ffmpeg auto-bundled in ./tools on Windows
