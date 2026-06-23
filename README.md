@@ -30,6 +30,12 @@ First time only: `pip install -r requirements.txt` then `pwsh -File scripts/get_
 
 > **State of things:** the translated **natural-voice dub** (transcribe → translate → voice → music → subtitles) is solid and verified. **Lip-sync** (Wav2Lip) works in Colab once cells 7a→7c run. **Cloned voice was dropped on Colab** — its library (coqui-tts) requires numpy<2, which is incompatible with Colab's stack. Natural voice is the dependable path.
 
+### Lip-sync quality — known low, here's how to fix it later
+Wav2Lip is fast and reliable but **low-resolution** — it only repaints a ~96px mouth crop, so the mouth looks blurry on HD video. Ways to improve, roughly in effort order:
+1. **Enable the face enhancer** in the justinjohn0306 fork (GFPGAN/Real-ESRGAN upscales the rendered face) — biggest quick win, just extra flags/cells.
+2. **Feed a tighter, well-lit, front-facing face crop** and a smaller frame (e.g. 512–720p) — Wav2Lip does better when the face fills more of the frame.
+3. **Switch to a modern lip-sync model**: LatentSync, VideoReTalking, SadTalker, or MuseTalk — far sharper, heavier to set up. `src/lipsync.py` shells out to one tool, so swapping is localized.
+
 ---
 
 ## See it run in 10 seconds (any laptop — no GPU, no models, no internet)
